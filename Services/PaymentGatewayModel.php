@@ -40,14 +40,14 @@
  *
  */
 
-namespace BiberLtd\Core\Bundles\PaymentGatewayBundle\Services;
+namespace BiberLtd\Bundle\PaymentGatewayBundle\Services;
 
 /** Extends CoreModel */
 use BiberLtd\Core\CoreModel;
 /** Entities to be used */
-use BiberLtd\Core\Bundles\PaymentGatewayBundle\Entity as BundleEntity;
+use BiberLtd\Bundle\PaymentGatewayBundle\Entity as BundleEntity;
 /** Helper Models */
-use BiberLtd\Core\Bundles\SiteManagementBundle\Services as SMMService;
+use BiberLtd\Bundle\SiteManagementBundle\Services as SMMService;
 /** Core Service */
 use BiberLtd\Core\Services as CoreServices;
 

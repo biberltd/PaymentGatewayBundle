@@ -15,7 +15,7 @@
  *
  */
 
-namespace BiberLtd\Core\Bundles\PaymentGatewayBundle\Entity;
+namespace BiberLtd\Bundle\PaymentGatewayBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreEntity;
 /** 
@@ -47,7 +47,7 @@ class PaymentGatewayLocalization extends CoreEntity
     /** 
      * @ORM\Id
      * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Core\Bundles\PaymentGatewayBundle\Entity\PaymentGateway",
+     *     targetEntity="BiberLtd\Bundle\PaymentGatewayBundle\Entity\PaymentGateway",
      *     inversedBy="localizations"
      * )
      * @ORM\JoinColumn(name="gateway", referencedColumnName="id", nullable=false, onDelete="CASCADE")
@@ -56,7 +56,7 @@ class PaymentGatewayLocalization extends CoreEntity
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\MultiLanguageSupportBundle\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $language;

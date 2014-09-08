@@ -14,7 +14,7 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\PaymentGatewayBundle\Entity;
+namespace BiberLtd\Bundle\PaymentGatewayBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreLocalizableEntity;
 /** 
@@ -47,14 +47,14 @@ class PaymentGateway extends CoreLocalizableEntity
 
     /** 
      * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Core\Bundles\PaymentGatewayBundle\Entity\PaymentGatewayLocalization",
+     *     targetEntity="BiberLtd\Bundle\PaymentGatewayBundle\Entity\PaymentGatewayLocalization",
      *     mappedBy="payment_gateway"
      * )
      */
     protected $localizations;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\SiteManagementBundle\Entity\Site")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", onDelete="CASCADE")
      */
     private $site;
