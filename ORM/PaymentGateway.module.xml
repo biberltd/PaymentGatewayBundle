@@ -66,7 +66,7 @@
     </association>
     <comment caption="PaymentGatewayBundle Pricing" description="payment_gateway: 105 TL&#10;payment_gateway_locallization: 150 TL&#10;&#10;toplam: 255 TL" uuid="9c69dffa-112a-4355-9588-ff8bcd644869"/>
     <orm-attributes>
-      <attribute name="namespace">BiberLtd\Core\Bundles\PaymentGatewayBundle\Entity</attribute>
+      <attribute name="namespace">BiberLtd\Bundle\PaymentGatewayBundle\Entity</attribute>
       <attribute name="filename-format">entity-name-only</attribute>
       <attribute name="file-suffix">without-suffix</attribute>
     </orm-attributes>
