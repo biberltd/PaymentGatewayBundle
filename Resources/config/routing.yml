@@ -1,3 +1,0 @@
-biber_ltd_payment_gateway_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: BiberLtdPaymentGatewayBundle:Default:index }
