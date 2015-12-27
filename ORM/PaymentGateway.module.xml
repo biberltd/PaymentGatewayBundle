@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<skipper version="3.0.0.1104" mvc="Symfony2" orm="Doctrine2">
-  <module name="PaymentGatewayBundle" import-format="Doctrine2Php" import-path="../Entity" uuid="1d850c73-f565-4952-9f5a-0ef0e24c3c6f">
-    <entity name="PaymentGateway" description="Stores payment gateway definitions." uuid="43ab6b0b-c85b-42cf-8db0-ec811ef8a48a">
+<skipper version="3.2.4.1256" mvc="Symfony2" orm="Doctrine2">
+  <module name="\PaymentGatewayBundle" local-name="PaymentGatewayBundle" namespace="\" uuid="1d850c73-f565-4952-9f5a-0ef0e24c3c6f">
+    <entity name="\PaymentGateway" local-name="PaymentGateway" namespace="\" description="Stores payment gateway definitions." uuid="43ab6b0b-c85b-42cf-8db0-ec811ef8a48a">
       <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="babc4958-6bde-4e1f-b828-17498e674732"/>
       <field name="date_added" description="Date when the gateway added." type="datetime" required="true" uuid="b1d4e32f-efac-4a2b-b0fa-55c33c928719"/>
       <field name="settings" description="Gateway settings serialxed and base64 encoded." type="text" required="true" uuid="0db30667-8533-47ba-8c7b-70a13d654045"/>
@@ -22,13 +22,13 @@
         <attribute name="export-file-name">PaymentGateway.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="PaymentGateway" to="Site" caption="idx_f_payment_gateway_site" inverse-alias="site" uuid="c742b246-99d9-4f7a-b32d-183c4e37e286">
+    <association from="\PaymentGateway" to="\BiberLtd\Bundle\SiteManagementBundle\Entity\Site" caption="idx_f_payment_gateway_site" inverse-alias="site" many-owner="true" many-inverse="false" uuid="c742b246-99d9-4f7a-b32d-183c4e37e286">
       <association-field from="site" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <entity name="PaymentGatewayLocalization" description="Stores localized values of payment gateway definitions." uuid="757d47e8-7d49-43d6-a7d9-e744b24433d2">
+    <entity name="\PaymentGatewayLocalization" local-name="PaymentGatewayLocalization" namespace="\" description="Stores localized values of payment gateway definitions." uuid="757d47e8-7d49-43d6-a7d9-e744b24433d2">
       <field name="gateway" description="Localized payment gateway" type="integer" size="10" required="true" primary="true" uuid="6799fef4-cfed-4360-b9fe-4e19f0182f33"/>
       <field name="language" description="Localization language." type="integer" size="5" required="true" primary="true" uuid="92dd8a2d-be9b-411a-87a5-a533976eafa7"/>
       <field name="name" description="Localized gateway name." type="string" size="155" required="true" uuid="795eb90a-3eba-4ebb-81f7-f5a9b8b7fd3e"/>
@@ -52,19 +52,18 @@
         <attribute name="export-file-name">PaymentGatewayLocalization.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="PaymentGatewayLocalization" to="PaymentGateway" caption="idx_f_payment_gateway_localization_gateway" owner-alias="localizations" inverse-alias="payment_gateway" uuid="9b543542-5a60-4d97-9f61-2e8e49675712">
+    <association from="\PaymentGatewayLocalization" to="\PaymentGateway" caption="idx_f_payment_gateway_localization_gateway" owner-alias="localizations" inverse-alias="payment_gateway" many-owner="true" many-inverse="false" parent-required="true" uuid="9b543542-5a60-4d97-9f61-2e8e49675712">
       <association-field from="gateway" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="PaymentGatewayLocalization" to="Language" caption="idx_f_payment_gateway_localization_language" inverse-alias="language" uuid="bc01b795-15a2-456b-a3fe-48f6850ba6a9">
+    <association from="\PaymentGatewayLocalization" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idx_f_payment_gateway_localization_language" inverse-alias="language" many-owner="true" many-inverse="false" parent-required="true" uuid="bc01b795-15a2-456b-a3fe-48f6850ba6a9">
       <association-field from="language" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <comment caption="PaymentGatewayBundle Pricing" description="payment_gateway: 105 TL&#10;payment_gateway_locallization: 150 TL&#10;&#10;toplam: 255 TL" uuid="9c69dffa-112a-4355-9588-ff8bcd644869"/>
     <orm-attributes>
       <attribute name="namespace">BiberLtd\Bundle\PaymentGatewayBundle\Entity</attribute>
       <attribute name="filename-format">entity-name-only</attribute>
@@ -72,9 +71,8 @@
     </orm-attributes>
   </module>
   <visual-data>
-    <module uuid="1d850c73-f565-4952-9f5a-0ef0e24c3c6f" bg-color="4278222974" size-x="0" size-x2="750" size-y="0" size-y2="300"/>
-    <entity uuid="43ab6b0b-c85b-42cf-8db0-ec811ef8a48a" bg-color="4294967295" hdr-color="4292006610" position-x="250" position-y="100" size-x="0" size-x2="118" size-y="0" size-y2="73"/>
+    <entity uuid="43ab6b0b-c85b-42cf-8db0-ec811ef8a48a" bg-color="4294967295" hdr-color="4292006610" position-x="83" position-y="50" size-x="0" size-x2="118" size-y="0" size-y2="73"/>
     <entity uuid="757d47e8-7d49-43d6-a7d9-e744b24433d2" bg-color="4294967295" hdr-color="4292006610" position-x="500" position-y="100" size-x="0" size-x2="145" size-y="0" size-y2="87"/>
-    <comment uuid="9c69dffa-112a-4355-9588-ff8bcd644869" bg-color="4294948765" position-x="0" position-y="15" size-x="0" size-x2="200" size-y="0" size-y2="80" txt-color="4278190080"/>
+    <module uuid="1d850c73-f565-4952-9f5a-0ef0e24c3c6f" bg-color="4278222974" size-x="0" size-x2="765" size-y="0" size-y2="307"/>
   </visual-data>
 </skipper>
