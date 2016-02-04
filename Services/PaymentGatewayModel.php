@@ -32,7 +32,7 @@ class PaymentGatewayModel extends CoreModel {
      * @param string $db_connection
      * @param string $orm
      */
-    public function __construct($kernel, \string $db_connection = 'default', \string $orm = 'doctrine') {
+    public function __construct($kernel, string $db_connection = 'default', string $orm = 'doctrine') {
         parent::__construct($kernel, $db_connection, $orm);
 
         $this->entity = array(
