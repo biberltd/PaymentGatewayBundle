@@ -21,9 +21,9 @@
         "biberltd/site-management-bundle" : "~3.4"
     },
     "autoload": {
-        "psr-0": { "BiberLtd\\PaymentGatewayBundle": "" }
+        "psr-0": { "BiberLtd\\Bundle\\PaymentGatewayBundle": "" }
 
     },
     "minimum-stability": "dev",
-    "target-dir": "BiberLtd/PaymentGatewayBundle"
+    "target-dir": "BiberLtd/Bundle/PaymentGatewayBundle"
 }
