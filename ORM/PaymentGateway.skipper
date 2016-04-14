@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<skipper version="3.2.6.1309" mvc="Symfony2" orm="Doctrine2">
+  <module name="\PaymentGatewayBundle" local-name="PaymentGatewayBundle" namespace="\" export-format="Doctrine2Php" export-path="../Entity" uuid="1d850c73-f565-4952-9f5a-0ef0e24c3c6f">
+    <entity name="\PaymentGateway" local-name="PaymentGateway" namespace="\" description="Stores payment gateway definitions." uuid="43ab6b0b-c85b-42cf-8db0-ec811ef8a48a">
+      <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="babc4958-6bde-4e1f-b828-17498e674732"/>
+      <field name="date_added" description="Date when the gateway added." type="datetime" required="true" uuid="b1d4e32f-efac-4a2b-b0fa-55c33c928719"/>
+      <field name="settings" description="Gateway settings serialxed and base64 encoded." type="text" required="true" uuid="0db30667-8533-47ba-8c7b-70a13d654045"/>
+      <field name="site" description="Site that gateway belongs to." type="integer" size="10" uuid="be51c732-9d6a-4fae-951d-47050492cd8e"/>
+      <index name="idx_u_payment_gateway_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_n_payment_gateway_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">payment_gateway</attribute>
+        <attribute name="export-file-name">PaymentGateway.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="\PaymentGateway" to="\BiberLtd\Bundle\SiteManagementBundle\Entity\Site" caption="idx_f_payment_gateway_site" inverse-alias="site" many-owner="true" many-inverse="false" uuid="c742b246-99d9-4f7a-b32d-183c4e37e286">
+      <association-field from="site" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="\PaymentGatewayLocalization" local-name="PaymentGatewayLocalization" namespace="\" description="Stores localized values of payment gateway definitions." uuid="757d47e8-7d49-43d6-a7d9-e744b24433d2">
+      <field name="gateway" description="Localized payment gateway" type="integer" size="10" required="true" primary="true" uuid="6799fef4-cfed-4360-b9fe-4e19f0182f33"/>
+      <field name="language" description="Localization language." type="integer" size="5" required="true" primary="true" uuid="92dd8a2d-be9b-411a-87a5-a533976eafa7"/>
+      <field name="name" description="Localized gateway name." type="string" size="155" required="true" uuid="795eb90a-3eba-4ebb-81f7-f5a9b8b7fd3e"/>
+      <field name="url_key" description="Localized url key." type="string" size="255" required="true" uuid="3d3f14e8-4b9d-4471-b17d-752388de05f4"/>
+      <field name="description" description="Localized description." type="string" size="255" uuid="65d9b62e-d493-4b81-86c4-6a70d5b4d663"/>
+      <index name="idx_u_payment_gateway_localization">
+        <index-field name="gateway"/>
+        <index-field name="language"/>
+      </index>
+      <index name="idx_u_payment_gateway_localization_url_key" unique="true">
+        <index-field name="language"/>
+        <index-field name="url_key"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utff8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">payment_gateway_localization</attribute>
+        <attribute name="export-file-name">PaymentGatewayLocalization.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="\PaymentGatewayLocalization" to="\PaymentGateway" caption="idx_f_payment_gateway_localization_gateway" owner-alias="localizations" inverse-alias="payment_gateway" many-owner="true" many-inverse="false" parent-required="true" uuid="9b543542-5a60-4d97-9f61-2e8e49675712">
+      <association-field from="gateway" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="\PaymentGatewayLocalization" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idx_f_payment_gateway_localization_language" inverse-alias="language" many-owner="true" many-inverse="false" parent-required="true" uuid="bc01b795-15a2-456b-a3fe-48f6850ba6a9">
+      <association-field from="language" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="\PaymentTransaction" local-name="PaymentTransaction" namespace="\" description="Tracks transactions occurred between gateway and web site." uuid="3d3f1b7c-3e70-420c-ab3a-cedc3fd8c8a5">
+      <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="6d0bf8e9-b87f-46c6-9516-73b985a427a3">
+        <orm-attributes>
+          <attribute name="generator">
+            <attribute name="strategy">AUTO</attribute>
+          </attribute>
+        </orm-attributes>
+      </field>
+      <field name="transaction_id" description="Gateway returned transaction id." type="string" size="255" required="true" uuid="a1b4ec4e-9b66-4659-9496-1c387fb381ea"/>
+      <field name="shopping_order" description="Order that transaction is fired from." type="integer" size="15" uuid="7cc7f663-431e-49bf-a73b-4b241df33ac4"/>
+      <field name="gateway" description="Gateway used during the transaction." type="integer" size="10" required="true" uuid="61adaaf1-e25f-4007-a4bc-755e92fd165e"/>
+      <field name="amount" description="Transaction amount." type="decimal" size="7" default="0" required="true" uuid="b4f027da-0a1d-47c5-9247-96cbd5684b6f"/>
+      <field name="status" description="ACK or status codes or messages." type="string" size="155" required="true" uuid="32921386-f5cc-49f0-a989-5d1b7be3429c"/>
+      <field name="response" description="Original response returned from gateway." type="text" required="true" uuid="7fe0bea9-6e30-488a-b0b8-07148d99605b"/>
+      <field name="date_added" description="Date when the transaction is added." type="datetime" required="true" uuid="630e6a0e-9a34-4b7d-a996-51b4674bb151"/>
+      <field name="site" description="Site that transaction belongs to." type="integer" size="10" uuid="25d52b13-f2e2-4ea0-9567-fc3bf8442cdd"/>
+      <field name="member" description="Member that transaction belongs to." type="integer" size="10" required="true" uuid="6517d8f0-5bd0-4cfb-8508-3c7cb2663827"/>
+      <index name="idxUPaymentTransactionId" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idxNPaymentTransactionDateAdded">
+        <index-field name="date_added"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">payment_transaction</attribute>
+        <attribute name="export-file-name">PaymentTransaction.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="\PaymentTransaction" to="\BiberLtd\Bundle\SiteManagementBundle\Entity\Site" caption="idxFSiteOfPaymentTransaction" inverse-alias="site" many-owner="true" many-inverse="false" uuid="3f1d6a73-84f7-4080-9f9f-993ce6c70334">
+      <association-field from="site" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="\PaymentTransaction" to="\BiberLtd\Bundle\MemberManagementBundle\Entity\Member" caption="idxFMemberOfPaymentTransaction" inverse-alias="member" many-owner="true" many-inverse="false" parent-required="true" uuid="6640d92e-bfee-457f-be1f-a49a2851f961">
+      <association-field from="member" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="\PaymentTransaction" to="\PaymentGateway" caption="idxFGatewayOfPaymentTransaction" inverse-alias="gateway" many-owner="true" many-inverse="false" parent-required="true" uuid="0856c61f-07e8-4a7e-b542-a5c9ee258a60">
+      <association-field from="gateway" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="\PaymentTransaction" to="\ShoppingOrder" caption="idxFOrderOfPaymentTransaction" inverse-alias="shopping_order" many-owner="true" many-inverse="false" uuid="689135fa-8203-4942-aae8-f5ca6239cca3">
+      <association-field from="shopping_order" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <comment caption="PaymentGatewayBundle Pricing" description="payment_gateway: 105 TL&#10;payment_gateway_locallization: 150 TL&#10;&#10;toplam: 255 TL" uuid="9c69dffa-112a-4355-9588-ff8bcd644869"/>
+    <orm-attributes>
+      <attribute name="namespace">BiberLtd\Bundle\PaymentGatewayBundle\Entity</attribute>
+      <attribute name="filename-format">entity-name-only</attribute>
+      <attribute name="file-suffix">without-suffix</attribute>
+    </orm-attributes>
+  </module>
+  <visual-data>
+    <comment uuid="9c69dffa-112a-4355-9588-ff8bcd644869" bg-color="4294948765" position-x="0" position-y="15" size-x="0" size-x2="200" size-y="0" size-y2="80" txt-color="4278190080"/>
+    <entity uuid="3d3f1b7c-3e70-420c-ab3a-cedc3fd8c8a5" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="533" position-y="111" size-x="0" size-x2="138" size-y="0" size-y2="157"/>
+    <entity uuid="43ab6b0b-c85b-42cf-8db0-ec811ef8a48a" bg-color="4294967295" hdr-color="4292006610" position-x="216" position-y="176" size-x="0" size-x2="114" size-y="0" size-y2="73"/>
+    <entity uuid="757d47e8-7d49-43d6-a7d9-e744b24433d2" bg-color="4294967295" hdr-color="4292006610" position-x="597" position-y="13" size-x="0" size-x2="134" size-y="0" size-y2="87"/>
+    <module uuid="1d850c73-f565-4952-9f5a-0ef0e24c3c6f" bg-color="#00807E" size-x="0" size-x2="750" size-y="0" size-y2="300"/>
+  </visual-data>
+</skipper>

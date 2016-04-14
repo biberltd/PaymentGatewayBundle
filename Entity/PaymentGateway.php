@@ -46,10 +46,7 @@ class PaymentGateway extends CoreLocalizableEntity
     private $settings;
 
     /** 
-     * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Bundle\PaymentGatewayBundle\Entity\PaymentGatewayLocalization",
-     *     mappedBy="payment_gateway"
-     * )
+     * @ORM\OneToMany(targetEntity="PaymentGatewayLocalization", mappedBy="payment_gateway")
      */
     protected $localizations;
 

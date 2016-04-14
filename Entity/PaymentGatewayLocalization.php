@@ -46,10 +46,7 @@ class PaymentGatewayLocalization extends CoreEntity
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Bundle\PaymentGatewayBundle\Entity\PaymentGateway",
-     *     inversedBy="localizations"
-     * )
+     * @ORM\ManyToOne(targetEntity="PaymentGateway", inversedBy="localizations")
      * @ORM\JoinColumn(name="gateway", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $payment_gateway;
