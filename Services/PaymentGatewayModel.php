@@ -49,10 +49,13 @@ use BiberLtd\Bundle\PaymentGatewayBundle\Entity as BundleEntity;
 use BiberLtd\Bundle\PaymentGatewayBundle\Entity as PGBEntity;
 use BiberLtd\Bundle\MemberManagementBundle\Entity as MMBEntity;
 use BiberLtd\Bundle\SiteManagementBundle\Entity as SMBEntity;
+use BiberLtd\Bundle\SubscriptionManagementBundle\Entity as SMEntity;
+
 /** Helper Models */
 use BiberLtd\Bundle\SiteManagementBundle\Services as SMMService;
 use BiberLtd\Bundle\MemberManagementBundle\Services as MMBService;
 use BiberLtd\Bundle\PaymentGatewayBundle\Services as PGBService;
+use BiberLtd\Bundle\ShoppingCartBundle\Services as SCService;
 /** Core Service */
 use BiberLtd\Bundle\CoreBundle\Services as CoreServices;
 use BiberLtd\Bundle\CoreBundle\Exceptions as CoreExceptions;
@@ -85,6 +88,7 @@ class PaymentGatewayModel extends CoreModel {
             'file' => array('name' => 'PaymentGatewayBundle:PaymentGateway', 'alias' => ''),
             'file_upload_folder' => array('name' => 'PaymentGatewayBundle:PaymentGatewayLocalization', 'alias' => 'pl'),
             'payment_transaction' => array('name' => 'ShoppingCartBundle:PaymentTransaction', 'alias' => 'pt'),
+            'subsciption_management' => array('name' => 'SubscriptionManagementBundle:Subscription', 'alias' => 'sm'),
         );
     }
 
@@ -1073,16 +1077,16 @@ class PaymentGatewayModel extends CoreModel {
         return $this->response;
     }
 
-    /*
+
     public function listShoppingOrderItemsOfSubscription($subscription,$filter = null, $sortorder = null, $limit = null, $query_str = null) {
-        if ($subscription instanceof BundleEntity\Subscription) {
+        if ($subscription instanceof SMEntity\Subscription) {
             $subscription = $subscription->getId();
         }elseif($subscription instanceof \stdClass){
             $subscription = $subscription->id;
         }elseif(is_int($subscription)){
             $subscription = $subscription;
         }else{
-            return $this->createException('InvalidParameter', 'Order', 'err.invalid.parameter');
+            return $this->createException('InvalidParameter', 'Subscription', 'err.invalid.parameter');
         }
         $filter = array();
         $filter[] = array(
@@ -1090,12 +1094,12 @@ class PaymentGatewayModel extends CoreModel {
             'condition' => array(
                 array(
                     'glue' => 'and',
-                    'condition' => array('column' => $this->entity['shopping_order_item']['alias'] . '.order', 'comparison' => '=', 'value' => $order),
+                    'condition' => array('column' => $this->entity['subsciption_management']['alias'] . '.subscription', 'comparison' => '=', 'value' => $subscription),
                 )
             )
         );
-        return $this->listShoppingOrderItems($filter);
+        $scModel =  new SCService\ShoppingCartModel($this->kernel, $this->dbConnection, $this->orm);
+        return $scModel->listShoppingOrderItems($filter);
     }
-    */
 
 }
