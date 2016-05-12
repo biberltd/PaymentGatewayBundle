@@ -21,11 +21,6 @@ use BiberLtd\Bundle\CoreBundle\Services as CoreServices;
 
 class PaymentGatewayModel extends CoreModel {
     /**
-     * @var array
-     */
-    public $by_opts = array('entity', 'id', 'code', 'url_key', 'post');
-
-    /**
      * PaymentGatewayModel constructor.
      *
      * @param object $kernel
@@ -36,8 +31,8 @@ class PaymentGatewayModel extends CoreModel {
         parent::__construct($kernel, $db_connection, $orm);
 
         $this->entity = array(
-            'pg' => array('name' => 'PaymentGatewayBundle:PaymentGateway', 'alias' => ''),
-            'pgl' => array('name' => 'PaymentGatewayBundle:PaymentGatewayLocalization', 'alias' => 'pl'),
+            'pg' => array('name' => 'PaymentGatewayBundle:PaymentGateway', 'alias' => 'pg'),
+            'pgl' => array('name' => 'PaymentGatewayBundle:PaymentGatewayLocalization', 'alias' => 'pgl'),
         );
     }
 
@@ -48,5 +43,82 @@ class PaymentGatewayModel extends CoreModel {
         foreach ($this as $property => $value) {
             $this->property = null;
         }
+    }
+
+    /**
+     * @param $gateway
+     * @return ModelResponse
+     */
+    public function getPaymentGateway($gateway)
+    {
+        $timeStamp = microtime(true);
+        if ($gateway instanceof BundleEntity\PaymentGateway) {
+            return new ModelResponse($gateway, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
+        }
+        $result = null;
+        switch ($gateway) {
+            case is_numeric($gateway):
+                $result = $this->em->getRepository($this->entity['pg']['name'])->findOneBy(array('id' => $gateway));
+                break;
+            case is_string($gateway):
+                $response = $this->getPaymentGatewayByUrlKey($gateway);
+                if (!$response->error->exist) {
+                    $result = $response->result->set;
+                }
+                unset($response);
+                break;
+        }
+        if (is_null($result)) {
+            return new ModelResponse($result, 0, 0, null, true, 'E:D:002', 'Unable to find request entry in database.', $timeStamp, microtime(true));
+        }
+
+        return new ModelResponse($result, 1, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
+    }
+
+    /**
+     * @param string $urlKey
+     * @param null $language
+     *
+     * @return \BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function getPaymentGatewayByUrlKey(string $urlKey, $language = null)
+    {
+        $timeStamp = microtime(true);
+        if (!is_string($urlKey)) {
+            return $this->createException('InvalidParameterValueException', '$urlKey must be a string.', 'E:S:007');
+        }
+        $filter[] = array(
+            'glue' => 'and',
+            'condition' => array(
+                array(
+                    'glue' => 'and',
+                    'condition' => array('column' => $this->entity['pgl']['alias'] . '.url_key', 'comparison' => '=', 'value' => $urlKey),
+                )
+            )
+        );
+        if (!is_null($language)) {
+            $mModel = $this->kernel->getContainer()->get('multilanguagesupport.model');
+            $response = $mModel->getLanguage($language);
+            if (!$response->error->exist) {
+                $filter[] = array(
+                    'glue' => 'and',
+                    'condition' => array(
+                        array(
+                            'glue' => 'and',
+                            'condition' => array('column' => $this->entity['pgl']['alias'] . '.language', 'comparison' => '=', 'value' => $response->result->set->getId()),
+                        )
+                    )
+                );
+            }
+        }
+        $response = $this->listProducts($filter, null, array('start' => 0, 'count' => 1));
+        if ($response->error->exist) {
+            return $response;
+        }
+        $response->stats->execution->start = $timeStamp;
+        $response->stats->execution->end = microtime(true);
+        $response->result->set = $response->result->set[0];
+
+        return $response;
     }
 }
