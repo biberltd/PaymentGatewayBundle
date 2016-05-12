@@ -1,7 +1,4 @@
-parameters:
-#    biber_ltd_payment_gateway.example.class: BiberLtd\Bundle\PaymentGatewayBundle\Example
-
 services:
-#    biber_ltd_payment_gateway.example:
-#        class: %biber_ltd_payment_gateway.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    paymentgateway.model:
+            class:        BiberLtd\Bundle\PaymentGatewayBundle\Services\PaymentGatewayModel
+            arguments:    ["@kernel", "default", "doctrine"]
