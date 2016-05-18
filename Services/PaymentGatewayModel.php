@@ -13,6 +13,7 @@ namespace BiberLtd\Bundle\PaymentGatewayBundle\Services;
 /** Extends CoreModel */
 use BiberLtd\Bundle\CoreBundle\CoreModel;
 /** Entities to be used */
+use BiberLtd\Bundle\CoreBundle\Responses\ModelResponse;
 use BiberLtd\Bundle\PaymentGatewayBundle\Entity as BundleEntity;
 /** Helper Models */
 use BiberLtd\Bundle\SiteManagementBundle\Services as SMMService;
@@ -111,7 +112,7 @@ class PaymentGatewayModel extends CoreModel {
                 );
             }
         }
-        $response = $this->listProducts($filter, null, array('start' => 0, 'count' => 1));
+        $response = $this->listPaymentGateways($filter, null, array('start' => 0, 'count' => 1));
         if ($response->error->exist) {
             return $response;
         }
@@ -120,5 +121,72 @@ class PaymentGatewayModel extends CoreModel {
         $response->result->set = $response->result->set[0];
 
         return $response;
+    }
+    /**
+     * @param array|null $filter
+     * @param array|null $sortOrder
+     * @param array|null $limit
+     *
+     * @return array|\BiberLtd\Bundle\CoreBundle\Responses\ModelResponse
+     */
+    public function listPaymentGateways(array $filter = null, array $sortOrder = null, array$limit = null)
+    {
+        $timeStamp = microtime(true);
+        if (!is_array($sortOrder) && !is_null($sortOrder)) {
+            return $this->createException('InvalidSortOrderException', '$sortOrder must be an array with key => value pairs where value can only be "asc" or "desc".', 'E:S:002');
+        }
+        $oStr = $wStr = $gStr = $fStr = '';
+
+        $qStr = 'SELECT ' . $this->entity['pgl']['alias'] .', '. $this->entity['pg']['alias']
+            . ' FROM ' . $this->entity['pgl']['name'] . ' ' . $this->entity['pgl']['alias']
+            . ' JOIN ' . $this->entity['pgl']['alias'] . '.payment_gateway  ' . $this->entity['pg']['alias'];
+
+        if (!is_null($sortOrder)) {
+            foreach ($sortOrder as $column => $direction) {
+                switch ($column) {
+                    case 'id':
+                    case 'date_added':
+                    case 'site':
+                        $column = $this->entity['pg']['alias'] . '.' . $column;
+                        break;
+                    case 'name':
+                    case 'description':
+                    case 'url_key':
+                        $column = $this->entity['pgl']['alias'] . '.' . $column;
+                        break;
+                }
+                $oStr .= ' ' . $column . ' ' . strtoupper($direction) . ', ';
+            }
+            $oStr = rtrim($oStr, ', ');
+            $oStr = ' ORDER BY ' . $oStr . ' ';
+        }
+
+        if (!is_null($filter)) {
+            $fStr = $this->prepareWhere($filter);
+            $wStr .= ' WHERE ' . $fStr;
+        }
+
+        $qStr .= $wStr . $gStr . $oStr;
+        $q = $this->em->createQuery($qStr);
+        $q = $this->addLimit($q, $limit);
+
+        $result = $q->getResult();
+
+        $entities = [];
+        foreach ($result as $entry) {
+            /**
+             * @var \BiberLtd\Bundle\PaymentGatewayBundle\Entity\PaymentGatewayLocalization $entry
+             */
+            $id = $entry->getPaymentGateway()->getId();
+            if (!isset($unique[$id])) {
+                $unique[$id] = '';
+                $entities[] = $entry->getPaymentGateway();
+            }
+        }
+        $totalRows = count($entities);
+        if ($totalRows < 1) {
+            return new ModelResponse(null, 0, 0, null, true, 'E:D:002', 'No entries found in database that matches to your criterion.', $timeStamp, microtime(true));
+        }
+        return new ModelResponse($entities, $totalRows, 0, null, false, 'S:D:002', 'Entries successfully fetched from database.', $timeStamp, microtime(true));
     }
 }
