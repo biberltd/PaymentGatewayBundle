@@ -6,10 +6,10 @@
       <field name="date_added" description="Date when the gateway added." type="datetime" required="true" uuid="b1d4e32f-efac-4a2b-b0fa-55c33c928719"/>
       <field name="settings" description="Gateway settings serialxed and base64 encoded." type="text" required="true" uuid="0db30667-8533-47ba-8c7b-70a13d654045"/>
       <field name="site" description="Site that gateway belongs to." type="integer" size="10" uuid="be51c732-9d6a-4fae-951d-47050492cd8e"/>
-      <index name="idx_u_payment_gateway_id" unique="true">
+      <index name="idxUPaymentGatewayId" unique="true">
         <index-field name="id"/>
       </index>
-      <index name="idx_n_payment_gateway_date_added">
+      <index name="idxNPaymentGatewayDateAdded">
         <index-field name="date_added"/>
       </index>
       <orm-attributes>
@@ -22,7 +22,7 @@
         <attribute name="export-file-name">PaymentGateway.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\PaymentGateway" to="\BiberLtd\Bundle\SiteManagementBundle\Entity\Site" caption="idx_f_payment_gateway_site" inverse-alias="site" many-owner="true" many-inverse="false" uuid="c742b246-99d9-4f7a-b32d-183c4e37e286">
+    <association from="\PaymentGateway" to="\BiberLtd\Bundle\SiteManagementBundle\Entity\Site" caption="idxFSiteOfPaymentGateway" inverse-alias="site" many-owner="true" many-inverse="false" uuid="c742b246-99d9-4f7a-b32d-183c4e37e286">
       <association-field from="site" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -34,11 +34,11 @@
       <field name="name" description="Localized gateway name." type="string" size="155" required="true" uuid="795eb90a-3eba-4ebb-81f7-f5a9b8b7fd3e"/>
       <field name="url_key" description="Localized url key." type="string" size="255" required="true" uuid="3d3f14e8-4b9d-4471-b17d-752388de05f4"/>
       <field name="description" description="Localized description." type="string" size="255" uuid="65d9b62e-d493-4b81-86c4-6a70d5b4d663"/>
-      <index name="idx_u_payment_gateway_localization">
+      <index name="idxNPaymentGatewayLocalization">
         <index-field name="gateway"/>
         <index-field name="language"/>
       </index>
-      <index name="idx_u_payment_gateway_localization_url_key" unique="true">
+      <index name="idxUPaymentGatewayLocalizationUrlKey" unique="true">
         <index-field name="language"/>
         <index-field name="url_key"/>
       </index>
@@ -52,13 +52,13 @@
         <attribute name="export-file-name">PaymentGatewayLocalization.php</attribute>
       </orm-attributes>
     </entity>
-    <association from="\PaymentGatewayLocalization" to="\PaymentGateway" caption="idx_f_payment_gateway_localization_gateway" owner-alias="localizations" inverse-alias="payment_gateway" many-owner="true" many-inverse="false" parent-required="true" uuid="9b543542-5a60-4d97-9f61-2e8e49675712">
+    <association from="\PaymentGatewayLocalization" to="\PaymentGateway" caption="idxFGatewayOfPaymentGatewayLocalization" owner-alias="" inverse-alias="gateway" many-owner="true" many-inverse="false" parent-required="true" uuid="9b543542-5a60-4d97-9f61-2e8e49675712">
       <association-field from="gateway" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
       </orm-attributes>
     </association>
-    <association from="\PaymentGatewayLocalization" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idx_f_payment_gateway_localization_language" inverse-alias="language" many-owner="true" many-inverse="false" parent-required="true" uuid="bc01b795-15a2-456b-a3fe-48f6850ba6a9">
+    <association from="\PaymentGatewayLocalization" to="\BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language" caption="idxFLanguageOfPaymentGatewayLocalization" inverse-alias="language" many-owner="true" many-inverse="false" parent-required="true" uuid="bc01b795-15a2-456b-a3fe-48f6850ba6a9">
       <association-field from="language" to="id"/>
       <orm-attributes>
         <attribute name="on-delete">CASCADE</attribute>
@@ -71,8 +71,8 @@
     </orm-attributes>
   </module>
   <visual-data>
-    <entity uuid="43ab6b0b-c85b-42cf-8db0-ec811ef8a48a" bg-color="4294967295" hdr-color="4292006610" position-x="83" position-y="50" size-x="0" size-x2="118" size-y="0" size-y2="73"/>
-    <entity uuid="757d47e8-7d49-43d6-a7d9-e744b24433d2" bg-color="4294967295" hdr-color="4292006610" position-x="500" position-y="100" size-x="0" size-x2="145" size-y="0" size-y2="87"/>
-    <module uuid="1d850c73-f565-4952-9f5a-0ef0e24c3c6f" bg-color="4278222974" size-x="0" size-x2="765" size-y="0" size-y2="307"/>
+    <entity uuid="43ab6b0b-c85b-42cf-8db0-ec811ef8a48a" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="83" position-y="50" size-x="0" size-x2="118" size-y="0" size-y2="73"/>
+    <entity uuid="757d47e8-7d49-43d6-a7d9-e744b24433d2" bg-color="#FFFFFF" hdr-color="#D2D2D2" position-x="291" position-y="218" size-x="0" size-x2="134" size-y="0" size-y2="87"/>
+    <module uuid="1d850c73-f565-4952-9f5a-0ef0e24c3c6f" bg-color="4278222974" size-x="0" size-x2="467" size-y="0" size-y2="438"/>
   </visual-data>
 </skipper>

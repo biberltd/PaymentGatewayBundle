@@ -9,7 +9,7 @@
     <association uuid="691cd89a-3534-4a4c-bf70-544fa15a4c35" color="#969696"/>
     <association uuid="71f15a54-6bc9-4510-84b1-2b2817781440" color="#969696"/>
     <association uuid="9b543542-5a60-4d97-9f61-2e8e49675712" color="#969696"/>
-    <association uuid="bc01b795-15a2-456b-a3fe-48f6850ba6a9" color="#969696"/>
+    <association uuid="bc01b795-15a2-456b-a3fe-48f6850ba6a9" caption1-position-x="0" caption1-position-y="0" center-position-x="-1" center-position-y="0" color="#969696"/>
     <association uuid="c742b246-99d9-4f7a-b32d-183c4e37e286" color="#969696"/>
     <association uuid="dcbf1caf-6474-4dfe-90be-7b58aa71c5c7" color="#969696"/>
     <module uuid="1d850c73-f565-4952-9f5a-0ef0e24c3c6f" position-x="1440" position-y="50"/>
