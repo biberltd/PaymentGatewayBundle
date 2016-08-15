@@ -27,8 +27,7 @@ CREATE TABLE `payment_gateway` (
   `settings` text NOT NULL,
   `site` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `site` (`site`),
-  KEY `site_2` (`site`),
+  KEY `idxNSite` (`site`),
   CONSTRAINT `idxFSiteOfPaymentGateway` FOREIGN KEY (`site`) REFERENCES `site` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -43,8 +42,7 @@ CREATE TABLE `payment_gateway_localization` (
   `url_key` text NOT NULL,
   `description` text,
   PRIMARY KEY (`gateway`,`language`),
-  KEY `language` (`language`),
-  KEY `language_2` (`language`),
+  KEY `idxNLanguage` (`language`),
   CONSTRAINT `idxFGatewayOfPaymentGatewayLocalization` FOREIGN KEY (`gateway`) REFERENCES `payment_gateway` (`id`) ON DELETE CASCADE,
   CONSTRAINT `idxFLanguageOfPaymentGatewayLocalization` FOREIGN KEY (`language`) REFERENCES `language` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
